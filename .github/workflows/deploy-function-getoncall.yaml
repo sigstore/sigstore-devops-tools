@@ -1,0 +1,42 @@
+name: deploy-get-oncall
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "get-oncall/**"
+      - ".github/workflows/deploy-function-getoncall.yaml"
+  workflow_dispatch:
+
+jobs:
+  deploy-staging:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      - uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+
+      - id: auth
+        uses: google-github-actions/auth@ef5d53e30bbcd8d0836f4288f5e50ff3e086997d # v1.0.0
+        with:
+          workload_identity_provider: "projects/801815070094/locations/global/workloadIdentityPools/tooling-pool/providers/github-actions-provider"
+          service_account: "github-actions@sigstore-support-tooling.iam.gserviceaccount.com"
+
+      - id: deploy
+        uses: google-github-actions/deploy-cloud-functions@69539a8ee03f967cf50d7ff1d224b027a8cf42bc # v0.10.3
+        with:
+          name: 'GetOncall'
+          runtime: 'go116'
+          entry_point: 'GetOncall'
+          project_id: 'sigstore-devops-tools'
+          source_dir: ./get-oncall
+          secret_environment_variables: 'SLACK_SECRET=projects/sigstore-support-tooling/secrets/SLACK_CLIENT_SECRET:latest,SLACK_API_KEY=projects/sigstore-support-tooling/secrets/SLACK_API_KEY:latest,PD_API_KEY=projects/sigstore-support-tooling/secrets/PD_API_KEY:latest'
+          memory_mb: '512'
+          region: us-central1
+          min_instances: 0
+          max_instances: 1
+          timeout: 60
+          deploy_timeout: 900
