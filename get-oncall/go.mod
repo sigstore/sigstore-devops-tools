@@ -3,7 +3,7 @@ module github.com/sigstore/sigstore-devops-tools/get-oncall
 go 1.16
 
 require (
-	github.com/PagerDuty/go-pagerduty v1.5.1
+	github.com/PagerDuty/go-pagerduty v1.6.0
 	github.com/slack-go/slack v0.11.2
 )
 
