@@ -4,7 +4,7 @@ go 1.16
 
 require (
 	github.com/PagerDuty/go-pagerduty v1.5.1
-	github.com/slack-go/slack v0.11.2
+	github.com/slack-go/slack v0.11.4
 )
 
 require (
