@@ -26,7 +26,7 @@ jobs:
           service_account: "github-actions@sigstore-support-tooling.iam.gserviceaccount.com"
 
       - id: deploy
-        uses: google-github-actions/deploy-cloud-functions@69539a8ee03f967cf50d7ff1d224b027a8cf42bc # v0.10.3
+        uses: google-github-actions/deploy-cloud-functions@14509ca55199d9348161571e36c48e44f855030d # v1.0.0
         with:
           name: 'GetOncall'
           runtime: 'go116'
