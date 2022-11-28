@@ -31,7 +31,7 @@ jobs:
           name: 'GetOncall'
           runtime: 'go116'
           entry_point: 'GetOncall'
-          project_id: 'sigstore-devops-tools'
+          project_id: ${{ env.GCP_PROJECT }}
           source_dir: ./get-oncall
           secret_environment_variables: 'SLACK_SECRET=projects/sigstore-support-tooling/secrets/SLACK_CLIENT_SECRET:latest,SLACK_API_KEY=projects/sigstore-support-tooling/secrets/SLACK_API_KEY:latest,PD_API_KEY=projects/sigstore-support-tooling/secrets/PD_API_KEY:latest'
           memory_mb: '512'
