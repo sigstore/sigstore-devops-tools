@@ -33,7 +33,7 @@ jobs:
           entry_point: 'GetOncall'
           project_id: ${{ env.GCP_PROJECT }}
           source_dir: ./get-oncall
-          secret_environment_variables: 'SLACK_SECRET=projects/sigstore-support-tooling/secrets/SLACK_CLIENT_SECRET:latest,SLACK_API_KEY=projects/sigstore-support-tooling/secrets/SLACK_API_KEY:latest,PD_API_KEY=projects/sigstore-support-tooling/secrets/PD_API_KEY:latest'
+          secret_environment_variables: 'SLACK_SECRET=projects/${{ env.GCP_PROJECT }}/secrets/SLACK_CLIENT_SECRET/versions/,SLACK_API_KEY=projects/${{ env.GCP_PROJECT }}/secrets/SLACK_API_KEY/versions/,PD_API_KEY=projects/${{ env.GCP_PROJECT }}/secrets/PD_API_KEY/versions/'
           memory_mb: '512'
           region: us-central1
           min_instances: 0
