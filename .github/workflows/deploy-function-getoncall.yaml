@@ -29,7 +29,7 @@ jobs:
         uses: google-github-actions/deploy-cloud-functions@b418957976ca9302f13bf31bd06aa0256b8263e1 # v2.1.0
         with:
           name: 'GetOncall'
-          runtime: 'go116'
+          runtime: 'go121'
           entry_point: 'GetOncall'
           project_id: ${{ env.GCP_PROJECT }}
           source_dir: ./get-oncall

@@ -1,6 +1,6 @@
 module github.com/sigstore/sigstore-devops-tools/get-oncall
 
-go 1.16
+go 1.21
 
 require (
 	github.com/PagerDuty/go-pagerduty v1.8.0
