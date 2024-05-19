@@ -1,4 +1,7 @@
-package slack
+// Copyright 2024 The Sigstore Authors
+// SPDX-License-Identifier: Apache-2.0
+
+package get_oncall
 
 import (
 	"bytes"
@@ -8,7 +11,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"strconv"
@@ -16,7 +19,11 @@ import (
 	"time"
 
 	"github.com/PagerDuty/go-pagerduty"
+	"github.com/chainguard-dev/clog"
+	"github.com/kelseyhightower/envconfig"
 	"github.com/slack-go/slack"
+
+	sg_slack "github.com/sigstore/sigstore-devops-tools/pkg/slack"
 )
 
 type oldTimeStampError struct {
@@ -33,16 +40,67 @@ const (
 	slackSignatureHeader        = "X-Slack-Signature"
 )
 
+type Config struct {
+	Port string `envconfig:"PORT" default:"8080"`
+
+	PagerDutyAPIKey string `envconfig:"PD_API_KEY" required:"true"`
+	SlackAPIKey     string `envconfig:"SLACK_API_KEY" required:"true"`
+	SlackSecret     string `envconfig:"SLACK_SECRET" required:"true"`
+}
+
+type Client struct {
+	ctx         context.Context
+	pdClient    *pagerduty.Client
+	slackClient *slack.Client
+	slackSecret string
+	port        string
+}
+
+func New(ctx context.Context) (*Client, error) {
+	config, err := getConfig()
+	if err != nil {
+		clog.FromContext(ctx).Errorf(err.Error())
+		return nil, err
+	}
+
+	return &Client{
+		ctx:         ctx,
+		pdClient:    pagerduty.NewClient(config.PagerDutyAPIKey),
+		slackClient: slack.New(config.SlackAPIKey),
+		slackSecret: config.SlackSecret,
+		port:        config.Port,
+	}, nil
+}
+
+func getConfig() (*Config, error) {
+	var c Config
+	err := envconfig.Process("", &c)
+	if err != nil {
+		return nil, err
+	}
+	return &c, nil
+}
+
+func (c *Client) StartServer() {
+	log := clog.FromContext(c.ctx)
+
+	http.HandleFunc("/", c.GetOncall)
+
+	// Start HTTP server.
+	log.Infof("Listening on port %s", c.port)
+	if err := http.ListenAndServe(":"+c.port, nil); err != nil {
+		log.Fatal("failed to listen and serve apk-events server", err)
+	}
+}
+
 // KGSearch uses the Knowledge Graph API to search for a query provided
 // by a Slack command.
-func GetOncall(w http.ResponseWriter, r *http.Request) {
-	client := setup(r.Context())
-
-	bodyBytes, err := ioutil.ReadAll(r.Body)
+func (c *Client) GetOncall(w http.ResponseWriter, r *http.Request) {
+	bodyBytes, err := io.ReadAll(r.Body)
 	if err != nil {
 		log.Fatalf("Couldn't read request body: %v", err)
 	}
-	r.Body = ioutil.NopCloser(bytes.NewBuffer(bodyBytes))
+	r.Body = io.NopCloser(bytes.NewBuffer(bodyBytes))
 
 	if r.Method != "POST" {
 		http.Error(w, "Only POST requests are accepted", 405)
@@ -53,8 +111,8 @@ func GetOncall(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Reset r.Body as ParseForm depletes it by reading the io.ReadCloser.
-	r.Body = ioutil.NopCloser(bytes.NewBuffer(bodyBytes))
-	result, err := verifyWebHook(r, client.slackSecret)
+	r.Body = io.NopCloser(bytes.NewBuffer(bodyBytes))
+	result, err := verifyWebHook(r, c.slackSecret)
 	if err != nil {
 		log.Fatalf("verifyWebhook: %v", err)
 	}
@@ -62,7 +120,7 @@ func GetOncall(w http.ResponseWriter, r *http.Request) {
 		log.Fatalf("signatures did not match.")
 	}
 
-	onCallResponse, err := client.getOncall()
+	onCallResponse, err := c.getOncall()
 	if err != nil {
 		log.Fatalf("getOncall: %v", err)
 	}
@@ -80,7 +138,7 @@ func (c *Client) getOncall() (*slack.Msg, error) {
 	}
 
 	if len(eps.OnCalls) == 0 {
-		return setSimpleSlackMessage("OnCall", "No one is Oncall at this time", "#13A554"), nil
+		return sg_slack.SetSimpleSlackMessage("OnCall", "No one is Oncall at this time", "#13A554"), nil
 	}
 
 	for _, p := range eps.OnCalls {
@@ -128,7 +186,7 @@ func (c *Client) getOncall() (*slack.Msg, error) {
 				break
 			}
 
-			return formatSlackMessage(endTimeMsg, p.Schedule.Summary, u.Timezone, slackUser), nil
+			return sg_slack.FormatSlackMessage(endTimeMsg, p.Schedule.Summary, u.Timezone, slackUser), nil
 		}
 	}
 
@@ -154,13 +212,13 @@ func verifyWebHook(r *http.Request, slackSigningSecret string) (bool, error) {
 		return false, fmt.Errorf("either timeStamp or signature headers were blank")
 	}
 
-	body, err := ioutil.ReadAll(r.Body)
+	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		return false, fmt.Errorf("ioutil.ReadAll(%v): %v", r.Body, err)
 	}
 
 	// Reset the body so other calls won't fail.
-	r.Body = ioutil.NopCloser(bytes.NewBuffer(body))
+	r.Body = io.NopCloser(bytes.NewBuffer(body))
 
 	baseString := fmt.Sprintf("%s:%s:%s", version, timeStamp, body)
 

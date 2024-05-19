@@ -4,7 +4,7 @@ Tools & services to help the development work of Sigstore organization and the i
 
 ## Cloud Functions
 
-* [get-oncall](./get-oncall): Slack slash command to get who are oncall for sigstore public instance. Deployed in GCP Cloud Functions.
+* [get-oncall](./cmd/get-oncall): Slack slash command to get who are oncall for sigstore public instance. Deployed in GCP Cloud Run.
 
 ## Security
 
