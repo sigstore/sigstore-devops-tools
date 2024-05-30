@@ -1,10 +1,13 @@
+// Copyright 2024 The Sigstore Authors
+// SPDX-License-Identifier: Apache-2.0
+
 package slack
 
 import (
 	"github.com/slack-go/slack"
 )
 
-func formatSlackMessage(msg, scheduleName, timezone, slackUser string) *slack.Msg {
+func FormatSlackMessage(msg, scheduleName, timezone, slackUser string) *slack.Msg {
 	message := &slack.Msg{
 		ResponseType: "in_channel",
 		Attachments: []slack.Attachment{
@@ -30,7 +33,7 @@ func formatSlackMessage(msg, scheduleName, timezone, slackUser string) *slack.Ms
 	return message
 }
 
-func setSimpleSlackMessage(title, msg, color string) *slack.Msg {
+func SetSimpleSlackMessage(title, msg, color string) *slack.Msg {
 	message := &slack.Msg{
 		ResponseType: "in_channel",
 		Attachments: []slack.Attachment{
