@@ -4,7 +4,7 @@ go 1.22.3
 
 require (
 	github.com/PagerDuty/go-pagerduty v1.8.0
-	github.com/chainguard-dev/clog v1.3.1
+	github.com/chainguard-dev/clog v1.4.0
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/slack-go/slack v0.13.0
 	github.com/spf13/cobra v1.8.1
