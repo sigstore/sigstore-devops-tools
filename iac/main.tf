@@ -3,7 +3,7 @@
 
 provider "google" { project = var.project_id }
 provider "google-beta" { project = var.project_id }
-provider "ko" { repo = "gcr.io/${var.project_id}" }
+provider "ko" { repo = "us-docker.pkg.dev/sigstore-support-tooling/${var.project_id}" }
 
 // Create a network with several regional subnets
 module "networking" {
