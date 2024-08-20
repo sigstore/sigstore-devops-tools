@@ -35,7 +35,7 @@ jobs:
         service_account: "github-actions@sigstore-support-tooling.iam.gserviceaccount.com"
 
     # Attempt to deploy the terraform configuration
-    - uses: hashicorp/setup-terraform@651471c36a6092792c552e8b1bef71e592b462d8 # v2.0.0
+    - uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v2.0.0
       with:
         terraform_version: 1.8
 
