@@ -1,7 +1,6 @@
 module github.com/sigstore/sigstore-devops-tools
 
-go 1.22.3
-toolchain go1.22.5
+go 1.22.5
 
 require (
 	github.com/PagerDuty/go-pagerduty v1.8.0
