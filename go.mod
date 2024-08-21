@@ -1,12 +1,13 @@
 module github.com/sigstore/sigstore-devops-tools
 
 go 1.22.3
+toolchain go1.22.5
 
 require (
 	github.com/PagerDuty/go-pagerduty v1.8.0
-	github.com/chainguard-dev/clog v1.4.0
+	github.com/chainguard-dev/clog v1.5.0
 	github.com/kelseyhightower/envconfig v1.4.0
-	github.com/slack-go/slack v0.13.1
+	github.com/slack-go/slack v0.14.0
 	github.com/spf13/cobra v1.8.1
 )
 
