@@ -36,3 +36,14 @@ updates:
         update-types:
           - "minor"
           - "patch"
+
+  - package-ecosystem: "terraform"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 5
+    directory: "/iac"
+    groups:
+      all:
+        update-types:
+          - "minor"
+          - "patch"
