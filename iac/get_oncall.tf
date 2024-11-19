@@ -25,9 +25,10 @@ module "slack_slash_pg_service" {
   source  = "chainguard-dev/common/infra//modules/regional-go-service"
   version = "0.6.98"
 
-  project_id = var.project_id
-  name       = "${var.name}-slack-slash-pg"
-  regions    = module.networking.regional-networks
+  project_id    = var.project_id
+  name          = "${var.name}-slack-slash-pg"
+  regions       = module.networking.regional-networks
+  require_squad = false
 
   ingress = "INGRESS_TRAFFIC_ALL"
   // This needs to egress in order to talk to Slack and PagerDuty
