@@ -6,7 +6,7 @@ require (
 	github.com/PagerDuty/go-pagerduty v1.8.0
 	github.com/chainguard-dev/clog v1.7.0
 	github.com/kelseyhightower/envconfig v1.4.0
-	github.com/slack-go/slack v0.17.1
+	github.com/slack-go/slack v0.17.2
 	github.com/spf13/cobra v1.9.1
 )
 
