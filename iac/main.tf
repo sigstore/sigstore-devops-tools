@@ -10,10 +10,11 @@ module "networking" {
   source  = "chainguard-dev/common/infra//modules/networking"
   version = "0.6.165"
 
-  name          = var.name
-  project_id    = var.project_id
-  regions       = var.regions
-  netnum_offset = 1
+  name                        = var.name
+  project_id                  = var.project_id
+  regions                     = var.regions
+  netnum_offset               = 1
+  hosted_zone_logging_enabled = false
 }
 
 
