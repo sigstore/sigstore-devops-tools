@@ -7,7 +7,7 @@ require (
 	github.com/chainguard-dev/clog v1.7.0
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/slack-go/slack v0.17.3
-	github.com/spf13/cobra v1.10.1
+	github.com/spf13/cobra v1.10.2
 )
 
 require (
