@@ -23,7 +23,9 @@ resource "google_secret_manager_secret_iam_binding" "slack_api_secret_binding" {
 
 module "slack_slash_pg_service" {
   source  = "chainguard-dev/common/infra//modules/regional-go-service"
-  version = "0.9.7"
+  version = "0.10.0"
+
+  team = "sigstore-devops"
 
   project_id    = var.project_id
   name          = "${var.name}-slack-slash-pg"

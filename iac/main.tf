@@ -8,13 +8,15 @@ provider "ko" { repo = "us-docker.pkg.dev/sigstore-support-tooling/${var.project
 // Create a network with several regional subnets
 module "networking" {
   source  = "chainguard-dev/common/infra//modules/networking"
-  version = "0.9.7"
+  version = "0.10.0"
 
   name                        = var.name
   project_id                  = var.project_id
   regions                     = var.regions
   netnum_offset               = 1
   hosted_zone_logging_enabled = false
+
+  team = "sigstore-devops"
 }
 
 
