@@ -25,6 +25,8 @@ module "slack_slash_pg_service" {
   source  = "chainguard-dev/common/infra//modules/regional-go-service"
   version = "0.10.0"
 
+  team = "sigstore-devops"
+
   project_id    = var.project_id
   name          = "${var.name}-slack-slash-pg"
   regions       = module.networking.regional-networks

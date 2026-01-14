@@ -15,6 +15,8 @@ module "networking" {
   regions                     = var.regions
   netnum_offset               = 1
   hosted_zone_logging_enabled = false
+
+  team = "sigstore-devops"
 }
 
 
