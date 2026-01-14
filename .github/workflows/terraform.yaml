@@ -24,9 +24,24 @@ jobs:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           persist-credentials: false
+
+      - name: Set up Go
+        uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
+        with:
+          # this points back to this file in case there are any changes in the 'go install' command below
+          cache-dependency-path: '.github/workflows/terraform.yml'
+          go-version: 'stable'
+
+      - name: Detect version of Terraform needed
+        id: version
+        run: |
+            go install github.com/hashicorp/terraform-config-inspect@latest
+            echo "terraform-version=$(terraform-config-inspect --json $GITHUB_WORKSPACE | jq -r .required_core[0])" >> "$GITHUB_OUTPUT"
+
       - uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
         with:
-          terraform_version: '1.9'
+          terraform_version: ${{ steps.version.outputs.terraform-version }}
+          terraform_wrapper: false
 
       - run: terraform fmt -check
 

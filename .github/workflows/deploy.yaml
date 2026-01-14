@@ -37,10 +37,16 @@ jobs:
         workload_identity_provider: "projects/801815070094/locations/global/workloadIdentityPools/tooling-pool/providers/github-actions-provider"
         service_account: "github-actions@sigstore-support-tooling.iam.gserviceaccount.com"
 
-    # Attempt to deploy the terraform configuration
-    - uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v2.0.0
+    - name: Detect version of Terraform needed
+      id: version
+      run: |
+          go install github.com/hashicorp/terraform-config-inspect@latest
+          echo "terraform-version=$(terraform-config-inspect --json ${GITHUB_WORKSPACE} | jq -r .required_core[0])" >> "$GITHUB_OUTPUT"
+
+    - uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
       with:
-        terraform_version: '1.9'
+        terraform_version: ${{ steps.version.outputs.terraform-version }}
+        terraform_wrapper: false
 
     - working-directory: ./iac
       run: |
