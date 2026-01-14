@@ -37,7 +37,7 @@ jobs:
         workload_identity_provider: "projects/801815070094/locations/global/workloadIdentityPools/tooling-pool/providers/github-actions-provider"
         service_account: "github-actions@sigstore-support-tooling.iam.gserviceaccount.com"
 
-      # Attempt to deploy the terraform configuration
+    # Attempt to deploy the terraform configuration
     - name: Detect version of Terraform needed
       id: version
       run: |
