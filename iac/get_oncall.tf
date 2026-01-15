@@ -27,9 +27,9 @@ module "slack_slash_pg_service" {
 
   team = "sigstore-devops"
 
-  project_id    = var.project_id
-  name          = "${var.name}-slack-slash-pg"
-  regions       = module.networking.regional-networks
+  project_id = var.project_id
+  name       = "${var.name}-slack-slash-pg"
+  regions    = module.networking.regional-networks
 
   ingress = "INGRESS_TRAFFIC_ALL"
   // This needs to egress in order to talk to Slack and PagerDuty
