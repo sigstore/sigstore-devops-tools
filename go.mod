@@ -6,7 +6,7 @@ require (
 	github.com/PagerDuty/go-pagerduty v1.8.0
 	github.com/chainguard-dev/clog v1.8.0
 	github.com/kelseyhightower/envconfig v1.4.0
-	github.com/slack-go/slack v0.17.3
+	github.com/slack-go/slack v0.18.0
 	github.com/spf13/cobra v1.10.2
 )
 
@@ -18,5 +18,4 @@ require (
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/spf13/pflag v1.0.9 // indirect
-	github.com/stretchr/testify v1.11.1 // indirect
 )
