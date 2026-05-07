@@ -23,7 +23,7 @@ resource "google_secret_manager_secret_iam_binding" "slack_api_secret_binding" {
 
 module "slack_slash_pg_service" {
   source  = "chainguard-dev/common/infra//modules/regional-go-service"
-  version = "1.0.5"
+  version = "1.0.6"
 
   team = "sigstore-devops"
 
