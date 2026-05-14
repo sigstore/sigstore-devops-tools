@@ -8,7 +8,7 @@ provider "ko" { repo = "us-docker.pkg.dev/sigstore-support-tooling/${var.project
 // Create a network with several regional subnets
 module "networking" {
   source  = "chainguard-dev/common/infra//modules/networking"
-  version = "1.0.7"
+  version = "1.0.8"
 
   name                        = var.name
   project_id                  = var.project_id
