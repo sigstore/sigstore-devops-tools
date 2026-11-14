@@ -25,6 +25,7 @@ jobs:
         with:
           go-version-file: './go.mod'
           check-latest: true
+          cache: false
 
       - name: build get-oncall
         run: go build -o get-oncall ./cmd/get_oncall
